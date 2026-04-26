@@ -1,41 +1,86 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import API from "../services/api";
 
 function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
 
-  useEffect(() => {
+  const fetchAnnouncements = () => {
     API.get("announcements/")
       .then((res) => {
-        console.log("DATA:", res.data); // debug
         setAnnouncements(res.data);
-        setLoading(false);
       })
-      .catch((err) => {
-        console.error("ERROR:", err);
-        setLoading(false);
-      });
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    fetchAnnouncements();
   }, []);
 
+  const handleCreate = async (e) => {
+    e.preventDefault();
+
+    try {
+      await API.post("announcements/", {
+        title,
+        body,
+        category: "general",
+      });
+
+      alert("Announcement created!");
+
+      setTitle("");
+      setBody("");
+
+      fetchAnnouncements();
+    } catch (err) {
+      console.error(err);
+      alert("Only admin can create announcements");
+    }
+  };
+
+  // 👇👇👇 THIS IS THE RETURN PART
   return (
     <div style={{ padding: "20px" }}>
       <h1>📢 Announcements</h1>
 
-      {loading && <p>Loading...</p>}
+      {/* FORM */}
+      <form onSubmit={handleCreate}>
+        <h3>Create Announcement</h3>
 
-      {!loading && announcements.length === 0 && (
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <br /><br />
+
+        <textarea
+          placeholder="Body"
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+        />
+        <br /><br />
+
+        <button type="submit">Post</button>
+      </form>
+
+      <hr />
+
+      {/* LIST */}
+      {announcements.length === 0 ? (
         <p>No announcements yet</p>
-      )}
-
-      {!loading &&
+      ) : (
         announcements.map((item) => (
           <div key={item.id} style={{ marginBottom: "15px" }}>
             <h3>{item.title}</h3>
             <p>{item.body}</p>
-            <small>Category: {item.category}</small>
+            <small>{item.category}</small>
           </div>
-        ))}
+        ))
+      )}
     </div>
   );
 }
