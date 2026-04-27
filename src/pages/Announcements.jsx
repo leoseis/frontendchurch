@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import API from "../services/api";
 
 function Announcements() {
+
   const [announcements, setAnnouncements] = useState([]);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [user, setUser] = useState(null);
 
   const token = localStorage.getItem("access");
 
@@ -16,14 +18,18 @@ function Announcements() {
 
   const fetchAnnouncements = () => {
     API.get("announcements/")
-      .then((res) => {
-        setAnnouncements(res.data);
-      })
+      .then((res) => setAnnouncements(res.data))
       .catch((err) => console.error(err));
   };
 
   useEffect(() => {
     fetchAnnouncements();
+  }, []);
+
+  useEffect(() => {
+    API.get("auth/me/")
+      .then((res) => setUser(res.data))
+      .catch((err) => console.error(err));
   }, []);
 
   const handleCreate = async (e) => {
@@ -36,11 +42,8 @@ function Announcements() {
         category: "general",
       });
 
-      alert("Announcement created!");
-
       setTitle("");
       setBody("");
-
       fetchAnnouncements();
     } catch (err) {
       console.error(err);
@@ -48,15 +51,16 @@ function Announcements() {
     }
   };
 
+  // ✅ RETURN MUST BE INSIDE FUNCTION
   return (
     <div style={{ padding: "20px" }}>
       <h1>📢 Announcements</h1>
 
-      {/* ✅ LOGOUT BUTTON (FIXED POSITION) */}
       {token && <button onClick={handleLogout}>Logout</button>}
 
-      {/* FORM */}
-      {token && (
+      {user && <p>Welcome, {user.username}</p>}
+
+      {user?.is_staff && (
         <form onSubmit={handleCreate}>
           <h3>Create Announcement</h3>
 
@@ -81,15 +85,13 @@ function Announcements() {
 
       <hr />
 
-      {/* LIST */}
       {announcements.length === 0 ? (
         <p>No announcements yet</p>
       ) : (
         announcements.map((item) => (
-          <div key={item.id} style={{ marginBottom: "15px" }}>
+          <div key={item.id}>
             <h3>{item.title}</h3>
             <p>{item.body}</p>
-            <small>{item.category}</small>
           </div>
         ))
       )}
