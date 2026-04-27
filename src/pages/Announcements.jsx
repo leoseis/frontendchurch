@@ -53,49 +53,77 @@ function Announcements() {
 
   // ✅ RETURN MUST BE INSIDE FUNCTION
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>📢 Announcements</h1>
+  <div style={{ maxWidth: "700px", margin: "40px auto", padding: "20px" }}>
+    <h1 style={{ textAlign: "center" }}>📢 Announcements</h1>
 
-      {token && <button onClick={handleLogout}>Logout</button>}
+    {token && (
+      <div style={{ textAlign: "center", marginBottom: "10px" }}>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    )}
 
-      {user && <p>Welcome, {user.username}</p>}
+    {user && (
+      <p style={{ textAlign: "center" }}>
+        Welcome, <strong>{user.username}</strong>
+      </p>
+    )}
 
-      {user?.is_staff && (
-        <form onSubmit={handleCreate}>
-          <h3>Create Announcement</h3>
+    {/* FORM */}
+    {user?.is_staff && (
+      <form
+        onSubmit={handleCreate}
+        style={{
+          marginTop: "20px",
+          padding: "20px",
+          border: "1px solid #ddd",
+          borderRadius: "8px",
+        }}
+      >
+        <h3>Create Announcement</h3>
 
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <br /><br />
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+        />
 
-          <textarea
-            placeholder="Body"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-          />
-          <br /><br />
+        <textarea
+          placeholder="Body"
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+        />
 
-          <button type="submit">Post</button>
-        </form>
-      )}
+        <button type="submit">Post</button>
+      </form>
+    )}
 
-      <hr />
+    <hr style={{ margin: "30px 0" }} />
 
-      {announcements.length === 0 ? (
-        <p>No announcements yet</p>
-      ) : (
-        announcements.map((item) => (
-          <div key={item.id}>
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </div>
-        ))
-      )}
-    </div>
+    {/* LIST */}
+    {announcements.length === 0 ? (
+      <p style={{ textAlign: "center" }}>No announcements yet</p>
+    ) : (
+      announcements.map((item) => (
+        <div
+          key={item.id}
+          style={{
+            padding: "15px",
+            border: "1px solid #eee",
+            borderRadius: "8px",
+            marginBottom: "15px",
+            background: "#fafafa",
+          }}
+        >
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+          <small style={{ color: "#777" }}>{item.category}</small>
+        </div>
+      ))
+    )}
+  </div>
   );
 }
 

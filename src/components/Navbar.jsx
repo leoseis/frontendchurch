@@ -11,7 +11,7 @@ function Navbar() {
       display: "flex",
       justifyContent: "space-between"
     }}>
-      <h3>Church App</h3>
+      <h3>Halleluyiah church app</h3>
 
       <div>
         <Link to="/" style={{ color: "#fff", marginRight: "10px" }}>
