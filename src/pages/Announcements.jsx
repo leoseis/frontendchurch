@@ -6,6 +6,14 @@ function Announcements() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
+  const token = localStorage.getItem("access");
+
+  const handleLogout = () => {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    window.location.href = "/login";
+  };
+
   const fetchAnnouncements = () => {
     API.get("announcements/")
       .then((res) => {
@@ -40,32 +48,36 @@ function Announcements() {
     }
   };
 
-  // 👇👇👇 THIS IS THE RETURN PART
   return (
     <div style={{ padding: "20px" }}>
       <h1>📢 Announcements</h1>
 
+      {/* ✅ LOGOUT BUTTON (FIXED POSITION) */}
+      {token && <button onClick={handleLogout}>Logout</button>}
+
       {/* FORM */}
-      <form onSubmit={handleCreate}>
-        <h3>Create Announcement</h3>
+      {token && (
+        <form onSubmit={handleCreate}>
+          <h3>Create Announcement</h3>
 
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <br /><br />
+          <input
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <br /><br />
 
-        <textarea
-          placeholder="Body"
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-        />
-        <br /><br />
+          <textarea
+            placeholder="Body"
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+          />
+          <br /><br />
 
-        <button type="submit">Post</button>
-      </form>
+          <button type="submit">Post</button>
+        </form>
+      )}
 
       <hr />
 
