@@ -56,11 +56,11 @@ function Announcements() {
   <div style={{ maxWidth: "700px", margin: "40px auto", padding: "20px" }}>
     <h1 style={{ textAlign: "center" }}>📢 Announcements</h1>
 
-    {token && (
-      <div style={{ textAlign: "center", marginBottom: "10px" }}>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
-    )}
+   {token && (
+  <div style={{ textAlign: "right", marginBottom: "10px" }}>
+    <button onClick={handleLogout}>Logout</button>
+  </div>
+)}
 
     {user && (
       <p style={{ textAlign: "center" }}>
@@ -107,20 +107,22 @@ function Announcements() {
       <p style={{ textAlign: "center" }}>No announcements yet</p>
     ) : (
       announcements.map((item) => (
-        <div
-          key={item.id}
-          style={{
-            padding: "15px",
-            border: "1px solid #eee",
-            borderRadius: "8px",
-            marginBottom: "15px",
-            background: "#fafafa",
-          }}
-        >
-          <h3>{item.title}</h3>
-          <p>{item.body}</p>
-          <small style={{ color: "#777" }}>{item.category}</small>
-        </div>
+       <div
+  key={item.id}
+  style={{
+    padding: "20px",
+    borderRadius: "10px",
+    marginBottom: "15px",
+    background: "#ffffff",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+  }}
+>
+  <h3 style={{ marginBottom: "5px" }}>{item.title}</h3>
+  <p style={{ marginBottom: "10px" }}>{item.body}</p>
+  <small style={{ color: "#999" }}>
+    {item.category}
+  </small>
+</div>
       ))
     )}
   </div>

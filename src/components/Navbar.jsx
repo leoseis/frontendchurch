@@ -4,27 +4,26 @@ function Navbar() {
   const token = localStorage.getItem("access");
 
   return (
-    <nav style={{
-      padding: "10px",
-      background: "#222",
-      color: "#fff",
-      display: "flex",
-      justifyContent: "space-between"
-    }}>
-      <h3>Halleluyiah church app</h3>
+   <nav style={{
+  padding: "15px 30px",
+  background: "#222",
+  color: "#fff",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center"
+}}>
+  <h2 style={{ margin: 0 }}>Hallelujiah Church</h2>
 
-      <div>
-        <Link to="/" style={{ color: "#fff", marginRight: "10px" }}>
-          Home
-        </Link>
+  <div>
+    <Link to="/" style={{ color: "#fff", marginRight: "15px" }}>
+      Home
+    </Link>
 
-        {!token && (
-          <Link to="/login" style={{ color: "#fff" }}>
-            Login
-          </Link>
-        )}
-      </div>
-    </nav>
+    <Link to="/login" style={{ color: "#fff" }}>
+      Login
+    </Link>
+  </div>
+</nav>
   );
 }
 
